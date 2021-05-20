@@ -17,6 +17,7 @@
 
 <h1>QR CODE PIX</h1>
 
+    
 <br>
 
 <img :src="src">
