@@ -1,31 +1,46 @@
-<?php
+<div id="app">
+<form @submit.prevent="enviaForm">
+    <label for="pixType">Tipo de Chave</label>
+    <select name="pixType" v-model="pixType">
+        <option>CPF/CNPJ</option>
+        <option>CEL</option>
+    </select>
 
-require __DIR__.'/vendor/autoload.php';
-require __DIR__.'/config-pix.php';
+    <label for="pixKey">Chave Pix</label>
+    <input name="pixKey" id="pixKey" v-model="pixKey">
 
-use \App\Pix\Payload;
-use Mpdf\QrCode\QrCode;
-use Mpdf\QrCode\Output;
+    <label for="amount">Valor</label>
+    <input name="amount" id="amount" v-model="amount">
 
-$obPayload = (new Payload)->setPixKey(PIX_KEY)
-//    ->setDescription('')
-    ->setMerchantName(PIX_MERCHANT_NAME)
-    ->setMerchantCity(PIX_MERCHANT_CITY)
-    ->setAmount(0.01)
-    ->setTxid(md5(uniqid()));
-
-$payloadString = $obPayload->getPayload();
-$image = (new Output\Png)->output((new QrCode($payloadString)),400);
-
-?>
+    <button>Gerar QR CODE</button>
+</form>
 
 <h1>QR CODE PIX</h1>
 
 <br>
 
-<img src="data:image/png;base64, <?=base64_encode($image)?>">
+<img :src="src">
 
-<br><br>
 
-Código copia e cola:<br>
-<strong><? echo $payloadString?></strong>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
+<script>
+    new Vue({
+        data: () => ({
+            pixKey : '',
+            amount : '',
+            pixType : '',
+            src : ''
+        }),
+        created() {
+            // this.getValidationData()
+        },
+        methods: {
+            enviaForm() {
+                console.log(this.pixKey);
+                this.src = 'http://pix.localhost/QRCode.php?pixKey='+this.pixKey+'&amount='+this.amount+'&pixType='+this.pixType;
+                console.log(this.src);
+            }
+        }
+    }).$mount('#app');
+</script>
