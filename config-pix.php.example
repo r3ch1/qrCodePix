@@ -1,0 +1,7 @@
+<?php
+/**
+ * Configurações do projeto Pix
+ */
+define('PIX_KEY','CHAVE_PIX');
+define('PIX_MERCHANT_NAME','XXX');
+define('PIX_MERCHANT_CITY','XXX');
